@@ -32,7 +32,7 @@ jobs:
       - name: 🔍 Confirm Docker Hub Username
         run: echo "Docker image will be tagged as: ${{ secrets.DOCKERHUB_USERNAME }}/my-flask-time-app"
 
-      - name: 🐳Build Docker Images
+      - name: 🐳 Build Docker Images
         run: |
           docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/my-flask-time-app:latest .
           docker tag ${{ secrets.DOCKERHUB_USERNAME }}/my-flask-time-app:latest ${{ secrets.DOCKERHUB_USERNAME }}/my-flask-time-app:${{ github.sha }}
@@ -45,11 +45,11 @@ jobs:
           exit-code: 1
           ignore-unfixed: true
 
-      - name: 🔐Login to Dockerhub
+      - name: 🔐 Login to Dockerhub
         run: |
           echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
 
-      - name: 📤Push Docker Image to Docker Hub
+      - name: 📤 Push Docker Image to Docker Hub
         run: |
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/my-flask-time-app:latest
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/my-flask-time-app:${{ github.sha }}
