@@ -35,8 +35,8 @@ jobs:
 
       - name: 🐳 Build Docker Images
         run: |
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/my-flask-time-app:latest .
-          docker tag ${{ secrets.DOCKERHUB_USERNAME }}/my-flask-time-app:latest ${{ secrets.DOCKERHUB_USERNAME }}/my-flask-time-app:${{ github.sha }}
+          docker build -t dupsy/my-flask-time-app:latest .
+          docker tag dupsy/my-flask-time-app:latest dupsy/my-flask-time-app:${{ github.sha }}
 
       - name: 🔍 Trivy scan
         uses: aquasecurity/trivy-action@master
