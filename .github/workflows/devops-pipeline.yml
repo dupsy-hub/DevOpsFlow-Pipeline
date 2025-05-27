@@ -12,37 +12,41 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Code
+      - name: 🛎️ Checkout Code
         uses: actions/checkout@v3
 
-      - name: Set up Python
+      - name: ⚙️ Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: "3.10"
 
-      - name: Install Dependencies
+      - name: 📦Install Dependencies
         run: |
           pip install -r requirements.txt
 
-      - name: Run tests
-        run: pytest tests/
+      - name: ✅ Run tests
+        run: |
+          export PYTHONPATH=$PYTHONPATH:.
+          pytest tests/
 
-      - name: Build Docker Images
-        run: docker build -t dupsy/my-flask-time-app .
+      - name: 🐳Build Docker Images
+        run: |
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/my-flask-time-app:latest .
+          docker tag ${{ secrets.DOCKERHUB_USERNAME }}/my-flask-time-app:latest ${{ secrets.DOCKERHUB_USERNAME }}/my-flask-time-app:${{ github.sha }}
 
-      - name: Trivy scan
+      - name: 🔍Trivy scan
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: my-flask-time-app
+          image-ref: ${{ secrets.DOCKERHUB_USERNAME }}/my-flask-time-app
           format: table
           exit-code: 1
-          ignore-unfix: true
+          ignore-unfixed: true
 
-      - name: Login to Dockerhub
+      - name: 🔐Login to Dockerhub
         run: |
-          echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-standin
+          echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
 
-      - name: Push Docker Image to Docker Hub
+      - name: 📤Push Docker Image to Docker Hub
         run: |
-          docker tag my-flask-time-app ${{ secrets.DOCKERHUB_USERNAME }}/my-flask-time-app:latest
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/my-flask-time-app:latest
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/my-flask-time-app:${{ github.sha }}
