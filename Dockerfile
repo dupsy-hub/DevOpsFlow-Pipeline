@@ -2,9 +2,15 @@ FROM python:3.9-slim
 
 WORKDIR /app
 
+# Copy app and requirements
 COPY app.py .
+COPY requirements.txt .
 
-RUN pip install flask
+# Upgrade pip and setuptools to secure versions
+RUN pip install --upgrade pip setuptools
+
+# Install dependencies
+RUN pip install -r requirements.txt
 
 EXPOSE 8080
 

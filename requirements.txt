@@ -1,6 +1,5 @@
 flask==2.2.5
 werkzeug==2.3.0
 pytest==7.4.0
-
-
-
+pip>=23.3
+setuptools>=78.1.1
