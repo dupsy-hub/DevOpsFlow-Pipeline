@@ -1,5 +1,5 @@
-flask==2.2.5
-werkzeug>=3.0.6,<4.0
+flask>=3.0.0
+werkzeug>=3.0.6
 pytest==7.4.0
 pip>=23.3
 setuptools>=78.1.1
