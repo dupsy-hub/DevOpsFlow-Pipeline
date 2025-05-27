@@ -29,6 +29,9 @@ jobs:
           export PYTHONPATH=$PYTHONPATH:.
           pytest tests/
 
+      - name: 🔍 Confirm Docker Hub Username
+        run: echo "Docker image will be tagged as: ${{ secrets.DOCKERHUB_USERNAME }}/my-flask-time-app"
+
       - name: 🐳Build Docker Images
         run: |
           docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/my-flask-time-app:latest .
