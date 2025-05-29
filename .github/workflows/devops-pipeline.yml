@@ -57,17 +57,13 @@ jobs:
 
       - name: Configure Git Authur
         run: |
-
-      - name: Update Helm Chart with New Image Tag
-        env:
-          SHORT_SHA: ${{ github.sha }}
-        run: |
           git config --local user.email "dupesysdiary@gmail.com"
           git config --local user.name "dupsy-hub"
 
-      - name: Replace the image tag in your Helm chart values.yaml
+      - name: Update Helm Chart with New Image Tag
+
         run: |
-          sed -i "s/tag:.*/tag: $SHORT_SHA/" ./devopsflow-pipeline-time-app/values.yaml
+          sed -i "s/tag:.*/tag: ${{ env.SHORT_SHA }}/" ./devopsflow-pipeline-time-app/values.yaml
           git add ./devopsflow-pipeline-time-app/values.yaml
           git commit -m "Update Helm chart image tag to $SHORT_SHA" 
           git push
