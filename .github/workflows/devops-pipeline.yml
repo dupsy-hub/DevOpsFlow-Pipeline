@@ -14,6 +14,8 @@ jobs:
     steps:
       - name: 🛎️ Checkout Code
         uses: actions/checkout@v3
+        with:
+          persist-credentials: false
 
       - name: ⚙️ Set up Python
         uses: actions/setup-python@v4
