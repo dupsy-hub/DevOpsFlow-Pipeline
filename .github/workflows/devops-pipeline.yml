@@ -55,15 +55,17 @@ jobs:
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/my-flask-time-app:latest
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/my-flask-time-app:${{ github.sha }}
 
-      - name: Configure Git Authur
+      - name: Configure Git for push with PAT
         run: |
-          git config --local user.email "dupesysdiary@gmail.com"
-          git config --local user.name "dupsy-hub"
+          git config --global user.email "dupesysdiary@gmail.com"
+          git config --global user.name "dupsy-hub"
+          git remote set-url origin https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/dupsy-hub/DevOpsFlow-Pipeline.git
 
       - name: Update Helm Chart with New Image Tag
-
+        env:
+          SHORT_SHA: ${{ github.sha }}
         run: |
-          sed -i "s/tag:.*/tag: ${{ env.SHORT_SHA }}/" ./devopsflow-pipeline-time-app/values.yaml
+          sed -i "s/tag:.*/tag: $SHORT_SHA/" ./devopsflow-pipeline-time-app/values.yaml
           git add ./devopsflow-pipeline-time-app/values.yaml
-          git commit -m "Update Helm chart image tag to $SHORT_SHA" 
-          git push
+          git commit -m "Update Helm chart image tag to $SHORT_SHA" || echo "No changes to commit"
+          git push origin main
