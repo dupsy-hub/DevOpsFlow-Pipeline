@@ -1,6 +1,6 @@
 image:
   repository: dupsy/my-flask-time-app
-  tag: d7c84b2a7781dff9d93a59de22d7a64561b902eb
+  tag: 228be4bb81507d2cc76b0008b106df9be18cf07f
   pullPolicy: IfNotPresent
 service:
   type: ClusterIP
