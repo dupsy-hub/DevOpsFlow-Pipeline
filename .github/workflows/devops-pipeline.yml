@@ -60,7 +60,7 @@ jobs:
 
       - name: Update Helm Chart with New Image Tag
         env:
-        SHORT_SHA: ${{ github.sha }}
+          SHORT_SHA: ${{ github.sha }}
         run: |
           git config --local user.email "dupesysdiary@gmail.com"
           git config --local user.name "dupsy-hub"
