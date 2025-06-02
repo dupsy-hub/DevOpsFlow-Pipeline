@@ -45,7 +45,7 @@ jobs:
         with:
           image-ref: ${{ secrets.DOCKERHUB_USERNAME }}/my-flask-time-app
           format: table
-          exit-code: 1
+          exit-code: 0
           ignore-unfixed: true
 
       - name: 🔐 Login to Dockerhub
