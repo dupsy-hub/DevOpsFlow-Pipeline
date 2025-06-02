@@ -40,13 +40,10 @@ jobs:
           docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/my-flask-time-app:latest .
           docker tag ${{ secrets.DOCKERHUB_USERNAME }}/my-flask-time-app:latest ${{ secrets.DOCKERHUB_USERNAME }}/my-flask-time-app:${{ github.sha }}
 
-      - name: 🔍 Trivy scan
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: ${{ secrets.DOCKERHUB_USERNAME }}/my-flask-time-app
-          format: table
-          exit-code: 1
-          ignore-unfixed: true
+      - name: 🛡️ Run Trivy Scan (HIGH & CRITICAL only)
+        run: |
+          curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
+          trivy image --exit-code 1 --severity HIGH,CRITICAL ${{ secrets.DOCKERHUB_USERNAME }}/my-flask-time-app:latest
 
       - name: 🔐 Login to Dockerhub
         run: |
